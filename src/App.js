@@ -1,11 +1,20 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { Text, View } from "react-native";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducers from "./reducers";
+import LoginForm from "./components/LoginForm";
+import firebase from "@firebase/app";
+import "@firebase/auth";
+
+const store = createStore(reducers);
 
 class App extends Component {
   componentWillMount() {
+    this.initializeFirebase();
+  }
+
+  initializeFirebase() {
     const config = {
       apiKey: "AIzaSyBwJHQG6tGNiZGTRgFvkJ3QK-9OvxcJ5P8",
       authDomain: "manager-d255c.firebaseapp.com",
@@ -19,7 +28,7 @@ class App extends Component {
 
   render() {
     return (
-      <Provider store={createStore(reducers)}>
+      <Provider store={store}>
         <View>
           <Text>Hello</Text>
         </View>
