@@ -2,7 +2,7 @@ import React from "react";
 import { TextInput, Text, View } from "react-native";
 // import { BoxShadow } from "react-native-shadow";
 
-const Input = ({
+const InputBox = ({
   label,
   value,
   onChangeText,
@@ -49,4 +49,4 @@ const styles = {
   }
 };
 
-export { Input };
+export { InputBox };

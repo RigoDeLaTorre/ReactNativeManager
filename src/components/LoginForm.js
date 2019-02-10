@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { View, Text } from "react-native";
 import { emailChanged, passwordChanged, loginUser } from "../actions";
-import { Card, CardSection, Input, LoginButton, Spinner } from "./common";
+import { Card, CardSection, InputBox, LoginButton, Spinner } from "./common";
 
 class LoginForm extends Component {
   onEmailChange(text) {
@@ -38,7 +38,7 @@ class LoginForm extends Component {
     return (
       <Card>
         <CardSection>
-          <Input
+          <InputBox
             label="Email"
             placeholder="email@gmail.com"
             onChangeText={this.onEmailChange.bind(this)}
@@ -47,7 +47,7 @@ class LoginForm extends Component {
         </CardSection>
 
         <CardSection>
-          <Input
+          <InputBox
             secureTextEntry
             label="password"
             placeholder="password"
