@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { YellowBox } from "react-native";
+import _ from "lodash";
 import { Text, View } from "react-native";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
@@ -8,6 +10,14 @@ import LoginForm from "./components/LoginForm";
 import firebase from "@firebase/app";
 import "@firebase/auth";
 import Router from "./Router";
+
+YellowBox.ignoreWarnings(["Setting a timer"]);
+const _console = _.clone(console);
+console.warn = message => {
+  if (message.indexOf("Setting a timer") <= -1) {
+    _console.warn(message);
+  }
+};
 
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
