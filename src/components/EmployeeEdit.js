@@ -1,11 +1,13 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import Communciations from "react-native-communications";
 import EmployeeForm from "./EmployeeForm";
-import { employeeUpdate } from "../actions";
-import { Card, CardSection, LoginButton } from "./common";
+import { employeeUpdate, employeeSave, employeeDelete } from "../actions";
+import { Card, CardSection, LoginButton, Confirm } from "./common";
 
 class EmployeeEdit extends Component {
+  state = { showModal: false };
   componentWillMount() {
     _.each(this.props.employee, (value, prop) => {
       this.props.employeeUpdate({ prop, value });
@@ -13,7 +15,25 @@ class EmployeeEdit extends Component {
   }
   onButtonPress() {
     const { name, phone, shift } = this.props;
-    console.log(name, phone, shift);
+    this.props.employeeSave({
+      name,
+      phone,
+      shift,
+      uid: this.props.employee.uid
+    });
+  }
+
+  onTextPress() {
+    const { phone, shift } = this.props;
+    Communciations.text(phone, `Your upcoming shift is on ${shift}`);
+  }
+
+  onAccept() {
+    const { uid } = this.props.employee;
+    this.props.employeeDelete({ uid });
+  }
+  onDecline() {
+    this.setState({ showModal: false });
   }
 
   render() {
@@ -25,6 +45,28 @@ class EmployeeEdit extends Component {
             Save Changes
           </LoginButton>
         </CardSection>
+
+        <CardSection>
+          <LoginButton onPress={this.onTextPress.bind(this)}>
+            Text Schedule
+          </LoginButton>
+        </CardSection>
+
+        <CardSection>
+          <LoginButton
+            onPress={() => this.setState({ showModal: !this.state.showModal })}
+          >
+            Fire Employee
+          </LoginButton>
+        </CardSection>
+
+        <Confirm
+          visible={this.state.showModal}
+          onAccept={this.onAccept.bind(this)}
+          onDecline={this.onDecline.bind(this)}
+        >
+          Are you sure you want to delete this?
+        </Confirm>
       </Card>
     );
   }
@@ -37,5 +79,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { employeeUpdate }
+  { employeeUpdate, employeeSave, employeeDelete }
 )(EmployeeEdit);
